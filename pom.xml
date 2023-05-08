@@ -115,6 +115,7 @@
   </dependencies>
 
   <build>
+    <finalName>${project.artifactId}</finalName>
     <plugins>
       <plugin>
         <groupId>io.spring.javaformat</groupId>
@@ -238,6 +239,31 @@
           <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>1.2.2</version>
+        <configuration>
+          <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+          <imageName>petclinic-docker</imageName>
+          <imageTags>
+            <imageTag>v1.0.2</imageTag>
+          </imageTags>
+          <baseImage>{baseImage}</baseImage>
+          <entryPoint>{end[point]}</entryPoint>
+          <maintainer>author author@email.com</maintainer>
+          <workdir>/ROOT</workdir>
+          <resources>
+            <resource>
+              <targetPath>/</targetPath>
+              <directory>${project.build.directory}</directory>
+              <include>${project.build.finalName}.jar</include>
+            </resource>
+          </resources>
+        </configuration>
+      </plugin>
+
 
     </plugins>
   </build>
